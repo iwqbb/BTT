@@ -49,17 +49,17 @@ public class Bluetooth {
 			return false;
 		}
 		
+		// Socket生成
 		try {
-			// Socket生成
 			mBTSocket = mBTDevice.createRfcommSocketToServiceRecord(MY_UUID);
 		} catch (NullPointerException e1) {
 			Log.e("Bluetooth", "通信先のデバイスが指定されていません");
 		} catch (IOException e2){
 			Log.e("Bluetooth", "Socketを生成できません");
 		}
-
+		
+		// Socket接続
 		try {
-			// Socket接続
 			mBTSocket.connect();
 		} catch (IOException e1) {
 			Log.e("Bluetooth", "Socketが通信先のデバイスに接続できません");
@@ -69,6 +69,27 @@ public class Bluetooth {
 				Log.e("Bluetooth", "Socketを閉じるのに失敗しました");
 			}
 		}
+		
+		return true;
+	}
+	
+	/**
+	 * BluetoothSocketを閉じる
+	 * @return closeした場合はtrue, closeするSocketがなかった場合はfalse
+	 * @exception IOException
+	 */
+	public boolean closeSocket(){
+		if(mBTSocket == null){
+			return false;
+		}
+		
+		// Socket閉じる
+		try {
+			mBTSocket.close();
+		} catch (IOException e) {
+			Log.e("Bluetooth", "Socketを閉じるのに失敗しました");
+		}
+		mBTSocket = null;
 		
 		return true;
 	}
