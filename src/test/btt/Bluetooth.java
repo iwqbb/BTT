@@ -1,6 +1,7 @@
 package test.btt;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
@@ -41,7 +42,7 @@ public class Bluetooth {
 	
 	/**
 	 * コンストラクタ
-	 * デフォルトのBluetoothAdapterも取得する
+	 * デフォルトのBluetoothAdapter取得する
 	 */
 	public Bluetooth(){
 		mBTAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -100,5 +101,36 @@ public class Bluetooth {
 		mBTSocket = null;
 		
 		return true;
+	}
+	
+	/**
+	 * BluetoothのStreamにバッファを書き込む
+	 * @param buf バッファ
+	 */
+	public void write(final byte[] buffer){
+		Thread thread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO 自動生成されたメソッド・スタブ
+				OutputStream ost = null;
+				// BluetoothのStream取得
+				try {
+					ost = mBTSocket.getOutputStream();
+				} catch (IOException e) {
+					Log.e("Bluetooth", "Streamを取得できませんでした");
+				}
+				Log.d("Bluetooth", "wrote :\"" + buffer.toString() + "\"");
+				// Streamに書き込み
+				try {
+					ost.write(buffer);
+				} catch (IOException e) {
+					Log.e("Bluetooth", "Streamに書き込むことができませんでした");
+				}
+			}
+		});
+		
+		//スレッド実行
+		thread.run();
 	}
 }
