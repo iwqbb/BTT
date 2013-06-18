@@ -143,7 +143,12 @@ public class Bluetooth {
 	 */
 	public boolean setBluetoothDevice(String name, String address){
 		//ペアリングしているデバイス一覧を取得
-		Set<BluetoothDevice> pairedDevice = mBTAdapter.getBondedDevices();
+		Set<BluetoothDevice> pairedDevice = null;
+		try {
+			pairedDevice = mBTAdapter.getBondedDevices();
+		} catch (NullPointerException e) {
+			Log.e("Bluetooth", "BluetoothAdapterが取得できていません");
+		}
 		
 		//指定したデバイスがあれば返す
 		for(BluetoothDevice device : pairedDevice){
