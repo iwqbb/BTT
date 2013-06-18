@@ -2,6 +2,7 @@ package test.btt;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Set;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
@@ -132,5 +133,27 @@ public class Bluetooth {
 		
 		//スレッド実行
 		thread.run();
+	}
+	
+	/**
+	 * ペアリング済みのデバイスの中から指定した名前，アドレスのデバイスをBluetoothDeviceとしてセットする
+	 * @param name デバイス名
+	 * @param address デバイスのMACアドレス
+	 * @return デバイスがあればtrue,なければfalse
+	 */
+	public boolean setBluetoothDevice(String name, String address){
+		//ペアリングしているデバイス一覧を取得
+		Set<BluetoothDevice> pairedDevice = mBTAdapter.getBondedDevices();
+		
+		//指定したデバイスがあれば返す
+		for(BluetoothDevice device : pairedDevice){
+			if(device.getName().equals(name) && device.getAddress().equals(address)){
+				mBTDevice = device;
+				return true;
+			}
+		}
+		
+		mBTDevice = null;
+		return false;
 	}
 }
