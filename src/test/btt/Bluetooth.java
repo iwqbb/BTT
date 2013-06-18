@@ -40,6 +40,14 @@ public class Bluetooth {
 	}
 	
 	/**
+	 * コンストラクタ
+	 * デフォルトのBluetoothAdapterも取得する
+	 */
+	public Bluetooth(){
+		mBTAdapter = BluetoothAdapter.getDefaultAdapter();
+	}
+	
+	/**
 	 * BluetoothSocketを生成して接続する
 	 * @return 新たに接続した場合にはtrue，そうでなければfalse
 	 * @throws IOException, NullPointerException
