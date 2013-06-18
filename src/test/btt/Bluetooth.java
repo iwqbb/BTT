@@ -52,9 +52,9 @@ public class Bluetooth {
 	/**
 	 * BluetoothSocketを生成して接続する
 	 * @return 新たに接続した場合にはtrue，そうでなければfalse
-	 * @throws IOException, NullPointerException
+	 * @throws Exception
 	 */
-	public boolean connectSocket(){
+	public boolean connectSocket() throws Exception{
 		if (mBTSocket != null && mBTSocket.isConnected()){
 			return false;
 		}
@@ -62,11 +62,14 @@ public class Bluetooth {
 		// Socket生成
 		try {
 			mBTSocket = mBTDevice.createRfcommSocketToServiceRecord(MY_UUID);
-		} catch (NullPointerException e1) {
-			Log.e("Bluetooth", "通信先のデバイスが指定されていません");
-		} catch (IOException e2){
+		} catch (IOException e1){
 			Log.e("Bluetooth", "Socketを生成できません");
+			throw e1;
+		} catch (Exception e){
+			Log.e("Bluetooth", e.toString());
+			throw e;
 		}
+		
 		
 		// Socket接続
 		try {
@@ -78,6 +81,7 @@ public class Bluetooth {
 			} catch (IOException e2) {
 				Log.e("Bluetooth", "Socketを閉じるのに失敗しました");
 			}
+			throw e1;
 		}
 		
 		return true;
@@ -88,7 +92,7 @@ public class Bluetooth {
 	 * @return closeした場合はtrue, closeするSocketがなかった場合はfalse
 	 * @exception IOException
 	 */
-	public boolean closeSocket(){
+	public boolean closeSocket() throws IOException{
 		if(mBTSocket == null){
 			return false;
 		}
@@ -98,6 +102,7 @@ public class Bluetooth {
 			mBTSocket.close();
 		} catch (IOException e) {
 			Log.e("Bluetooth", "Socketを閉じるのに失敗しました");
+			throw e;
 		}
 		mBTSocket = null;
 		
@@ -107,8 +112,9 @@ public class Bluetooth {
 	/**
 	 * BluetoothのStreamにバッファを書き込む
 	 * @param buf バッファ
+	 * @exception IOException
 	 */
-	public void write(final byte[] buffer){
+	public void write(final byte[] buffer) throws IOException{
 		Thread thread = new Thread(new Runnable() {
 			
 			@Override
@@ -140,24 +146,25 @@ public class Bluetooth {
 	 * @param name デバイス名
 	 * @param address デバイスのMACアドレス
 	 * @return デバイスがあればtrue,なければfalse
+	 * @exception Exception
 	 */
-	public boolean setBluetoothDevice(String name, String address){
+	public boolean setBluetoothDevice(String name, String address) throws Exception{
 		//ペアリングしているデバイス一覧を取得
 		Set<BluetoothDevice> pairedDevice = null;
 		try {
 			pairedDevice = mBTAdapter.getBondedDevices();
-		} catch (NullPointerException e) {
-			Log.e("Bluetooth", "BluetoothAdapterが取得できていません");
-		}
-		
-		//指定したデバイスがあれば返す
-		for(BluetoothDevice device : pairedDevice){
-			if(device.getName().equals(name) && device.getAddress().equals(address)){
-				mBTDevice = device;
-				return true;
+
+			//指定したデバイスがあれば返す
+			for(BluetoothDevice device : pairedDevice){
+				if(device.getName().equals(name) && device.getAddress().equals(address)){
+					mBTDevice = device;
+					return true;
+				}
 			}
+		} catch (Exception e){
+			Log.e("Bluetooth", e.toString());
+			throw e;
 		}
-		
 		mBTDevice = null;
 		return false;
 	}
