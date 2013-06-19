@@ -126,10 +126,10 @@ public class Bluetooth {
 				} catch (IOException e) {
 					Log.e("Bluetooth", "Streamを取得できませんでした");
 				}
-				Log.d("Bluetooth", "wrote :\"" + buffer.toString() + "\"");
 				// Streamに書き込み
 				try {
 					ost.write(buffer);
+					Log.d("Bluetooth", "wrote :\"" + buffer.toString() + "\"");
 				} catch (IOException e) {
 					Log.e("Bluetooth", "Streamに書き込むことができませんでした");
 				}
