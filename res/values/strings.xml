@@ -4,6 +4,6 @@
     <string name="app_name">BTT</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="BUTTON1_TITLE">Send '0x01'</string>
+    <string name="BUTTON1_TITLE">Send0x01</string>
 
 </resources>
