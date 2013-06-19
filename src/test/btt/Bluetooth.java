@@ -2,6 +2,7 @@ package test.btt;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.UUID;
 
@@ -61,10 +62,8 @@ public class Bluetooth {
 		
 		// Socket生成
 		try {
-			mBTSocket = mBTDevice.createRfcommSocketToServiceRecord(MY_UUID);
-		} catch (IOException e1){
-			Log.e("Bluetooth", "Socketを生成できません");
-			throw e1;
+			Method m = mBTDevice.getClass().getMethod("createRfcommSocket", new Class[] {int.class});
+			mBTSocket = (BluetoothSocket) m.invoke(mBTDevice, 1);
 		} catch (Exception e){
 			Log.e("Bluetooth", e.toString());
 			throw e;
