@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
 		} catch (IOException e) {
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
 		}
+		super.onDestroy();
 	}
 	
     public void onClickButton1(View view){
