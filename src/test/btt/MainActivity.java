@@ -42,5 +42,11 @@ public class MainActivity extends Activity {
 	}
 	
     public void onClickButton1(View view){
+    	byte[] buffer = {0x01};
+    	try {
+			mBt.write(buffer);
+		} catch (IOException e) {
+			Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+		}
     }
 }
