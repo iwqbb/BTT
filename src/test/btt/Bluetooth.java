@@ -19,6 +19,8 @@ public class Bluetooth {
 	private BluetoothDevice mBTDevice = null;
 	private BluetoothSocket mBTSocket = null;
 	private Handler mHandler = null;
+	private Thread mReceiveThread = null;
+	private boolean mRunning = false;
 	
 	static public UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	
@@ -151,12 +153,13 @@ public class Bluetooth {
 	 * 
 	 */
 	public void receiveStart(){
-		new Thread(){
+		mReceiveThread = new Thread(){
 			
 			@Override
 			public void run() {
+				mRunning = true;
 				// TODO 自動生成されたメソッド・スタブ
-				while(true){
+				while(mRunning){
 					try {
 						InputStream ist = mBTSocket.getInputStream();
 						final int val = ist.read();
@@ -179,10 +182,20 @@ public class Bluetooth {
 					
 				}
 			}
-		}.start();
+		};
+		
+		mReceiveThread.start();
 		
 //		//スレッド実行
 //		thread.run();
+	}
+	
+	/**
+	 * 
+	 */
+	public void receiveStop(){
+		mRunning = false;
+		mReceiveThread.interrupt();
 	}
 	
 	/**
