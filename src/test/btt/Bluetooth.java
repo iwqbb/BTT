@@ -120,7 +120,7 @@ public class Bluetooth {
 	 * @param buf バッファ
 	 * @exception IOException
 	 */
-	public void write(final byte[] buffer) throws IOException{
+	public void send(final byte[] buffer) throws IOException{
 		Thread thread = new Thread(new Runnable() {
 			
 			@Override
@@ -150,7 +150,7 @@ public class Bluetooth {
 	/**
 	 * 
 	 */
-	public void readStart(){
+	public void receiveStart(){
 		new Thread(){
 			
 			@Override

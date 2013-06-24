@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
 		try {
 			mBt.setBluetoothDevice(getString(R.string.BTDEVICE_NAME_BLUETOOTHMATE), getString(R.string.BTDEVICE_ADDRESS_BLUETOOTHMATE));
 			mBt.connectSocket();
-			mBt.readStart();
+			mBt.receiveStart();
 		} catch (Exception e) {
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
 		}
@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
     public void onClickButton1(View view){
     	byte[] buffer = {0x01};
     	try {
-			mBt.write(buffer);
+			mBt.send(buffer);
 		} catch (IOException e) {
 			Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
 		}
