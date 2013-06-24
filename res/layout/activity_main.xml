@@ -8,11 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
     <Button
         android:id="@+id/button_send1"
         android:layout_width="wrap_content"
@@ -21,5 +16,14 @@
         android:layout_centerVertical="true"
         android:onClick="onClickButton1"
         android:text="@string/BUTTON1_TITLE" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="86dp"
+        android:text="TextView" />
 
 </RelativeLayout>
