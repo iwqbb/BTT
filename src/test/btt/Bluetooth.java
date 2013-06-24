@@ -1,6 +1,7 @@
 package test.btt;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -9,14 +10,19 @@ import java.util.UUID;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 public class Bluetooth {
 	private BluetoothAdapter mBTAdapter = null;
 	private BluetoothDevice mBTDevice = null;
 	private BluetoothSocket mBTSocket = null;
+	private Handler mHandler = null;
 	
 	static public UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	
+	static final public int MSG_TEST_VALUE = 100; 
 	
 	/**
 	 * BluetoothAdapterを取得
@@ -46,8 +52,9 @@ public class Bluetooth {
 	 * コンストラクタ
 	 * デフォルトのBluetoothAdapter取得する
 	 */
-	public Bluetooth(){
+	public Bluetooth(Handler handler){
 		mBTAdapter = BluetoothAdapter.getDefaultAdapter();
+		mHandler = handler;
 	}
 	
 	/**
@@ -138,6 +145,44 @@ public class Bluetooth {
 		
 		//スレッド実行
 		thread.run();
+	}
+	
+	/**
+	 * 
+	 */
+	public void readStart(){
+		new Thread(){
+			
+			@Override
+			public void run() {
+				// TODO 自動生成されたメソッド・スタブ
+				while(true){
+					try {
+						InputStream ist = mBTSocket.getInputStream();
+						final int val = ist.read();
+						
+						
+						Log.d("Bluetooth", String.valueOf(val));
+						mHandler.post(new Runnable() {
+							
+							@Override
+							public void run() {
+								// Update GUI
+								Message msg = mHandler.obtainMessage(MSG_TEST_VALUE, val, 0);
+								mHandler.sendMessage(msg);
+							}
+						});
+						
+					} catch (IOException e) {
+
+					}
+					
+				}
+			}
+		}.start();
+		
+//		//スレッド実行
+//		thread.run();
 	}
 	
 	/**
