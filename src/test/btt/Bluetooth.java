@@ -176,8 +176,10 @@ public class Bluetooth {
 							}
 						});
 						
-					} catch (IOException e) {
+					} catch (IOException e1) {
 
+					} catch (NullPointerException e2) {
+						if(!mRunning) break;
 					}
 					
 				}
