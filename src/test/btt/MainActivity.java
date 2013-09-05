@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,46 @@ public class MainActivity extends Activity {
 		} catch (Exception e) {
 			Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
 		}
+		
+		SeekBar seekBar = (SeekBar)findViewById(R.id.seekBar1);
+		seekBar.setMax(255);
+		seekBar.setProgress(0);
+		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				int val = seekBar.getProgress();
+				if(val < 0)	val = 0;
+				if(val > 255) val = 255;
+		    	byte[] buffer = {(byte)val};
+		    	try {
+					mBt.send(buffer);
+				} catch (IOException ex) {
+					
+				}
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO 自動生成されたメソッド・スタブ
+				
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				// TODO 自動生成されたメソッド・スタブ
+				int val = seekBar.getProgress();
+				if(val < 0)	val = 0;
+				if(val > 255) val = 255;
+		    	byte[] buffer = {(byte)val};
+		    	try {
+					mBt.send(buffer);
+				} catch (IOException ex) {
+					
+				}
+			}
+		});
 	}
 
 	@Override
